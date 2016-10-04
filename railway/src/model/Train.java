@@ -8,6 +8,7 @@ public class Train implements GameObject
 	private int width, height;
 	private Image texture;
 	private Point coords;
+	private static final int SPEED = 5;
 
 	public Train(int width, int height)
 	{
@@ -64,5 +65,10 @@ public class Train implements GameObject
 	public void setPosition(Point coords) 
 	{
 		this.coords = coords;
+	}
+
+	public static int getSpeed() 
+	{
+		return SPEED;
 	}
 }

@@ -8,6 +8,9 @@ public class Area implements GameObject
 	private int width, height, radius;
 	private Point coords;
 	private Color color;
+	private boolean used;
+	
+	public Area() {}
 	
 	public Area(int radius, Point coords)
 	{
@@ -16,6 +19,15 @@ public class Area implements GameObject
 		setHeight(2 * radius);
 		setPosition(coords);
 		color = Color.RED;
+	}
+	
+	public Area(int radius, Point coords, Color color)
+	{
+		setRadius(radius);
+		setWidth(2 * radius);
+		setHeight(2 * radius);
+		setPosition(coords);
+		setColor(color);
 	}
 	
 	public Color getColor() {
@@ -64,5 +76,15 @@ public class Area implements GameObject
 	public void setPosition(Point coords) 
 	{
 		this.coords = coords;
+	}
+
+	public boolean isUsed() 
+	{
+		return used;
+	}
+
+	public void setUsed(boolean used) 
+	{
+		this.used = used;
 	}
 }
