@@ -17,7 +17,8 @@ public class Station implements GameObject {
 		setWidth(2 * radius);
 		setHeight(2 * radius);
 		setPosition(coords);
-		color = Color.GREEN;
+		color = Color.RED;
+		//color = new Color(255, 255, 0);
 	}
 
 	public Station(int radius, Point coords, Color color) {
@@ -74,8 +75,8 @@ public class Station implements GameObject {
 
 	public void setUsed(boolean used) {
 		if (used == false)
-			color = Color.GREEN;
-		else color = Color.RED;
+			color = Color.RED;
+		else color = Color.GREEN;
 		this.used = used;
 	}
 }
