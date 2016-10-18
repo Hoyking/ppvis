@@ -5,25 +5,23 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.IOException;
 import javax.swing.JPanel;
-
 import actions.RailwayPressedAction;
 import actions.RailwayUnpressedAction;
-import controller.GameController;
+import controller.ActionController;
 import model.Path;
 import model.Station;
 
 public class RailwayMouseListener extends MouseAdapter implements MouseListener, MouseMotionListener {
-	private GameController gc;
+	private ActionController ac;
 	private RailwayPressedAction rPressed;
 	private RailwayUnpressedAction rUnpressed;
 	private boolean validWay;
 
-	public RailwayMouseListener(JPanel panel, GameController gc) {
+	public RailwayMouseListener(JPanel panel, ActionController ac) {
 		panel.addMouseListener((MouseListener) this);
 		panel.addMouseMotionListener((MouseMotionListener) this);
-		this.gc = gc;
+		this.ac = ac;
 	}
 	
 	public void setPressedAction(RailwayPressedAction action) {
@@ -36,15 +34,11 @@ public class RailwayMouseListener extends MouseAdapter implements MouseListener,
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		/*try {
-			gc.refreshView(new Point(e.getX(), e.getY()), 0);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}*/
 		Point tempPoint = new Point(e.getX(), e.getY());
 		Station tempStation = rPressed.checkPoint(tempPoint);
 		if(tempStation != null) {
-			gc.addPathToView(new Path(tempStation));
+			//gc.addPathToView(new Path(tempStation));
+			ac.addPath(new Path(tempStation));
 			validWay = true;
 		}
 		else validWay = false;
@@ -52,37 +46,28 @@ public class RailwayMouseListener extends MouseAdapter implements MouseListener,
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		/*try {
-			gc.refreshView(new Point(e.getX(), e.getY()), 1);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}*/
 		Point tempPoint = rUnpressed.checkPoint(new Point(e.getX(), e.getY()));
 		if(validWay){
 			if(tempPoint != null) {
-				gc.refreshCurPath(tempPoint);
+				ac.refreshCurPath(tempPoint);
+				ac.refreshCurPath(new Point(400, -20));
 				validWay = true;
 			}
 			else {
-				gc.setCurStationUsing(false);
-				gc.removeCurPath();
+				//ac.setCurStationUsing(0);
+				ac.removeCurPath();
 				validWay = false;
 			}
 		}
-		gc.refreshView();
+		ac.refreshView();
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		/*try {
-			gc.refreshView(new Point(e.getX(), e.getY()), 2);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}*/
 		Point tempPoint = new Point(e.getX(), e.getY());
 		if (validWay) {
-			gc.refreshCurPath(tempPoint);
-			gc.refreshView();
+			ac.refreshCurPath(tempPoint);
+			ac.refreshView();
 		}
 	}
 }

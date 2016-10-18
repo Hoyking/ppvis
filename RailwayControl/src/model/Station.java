@@ -1,40 +1,82 @@
 package model;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Point;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.imageio.ImageIO;
 
 public class Station implements GameObject {
 	private int width, height, radius;
 	private Point coords;
 	private Color color;
-	private boolean used;
-
-	public Station() {
-	}
-
-	public Station(int radius, Point coords) {
+	private List <Color> colors;
+	private String orientation = LEFT;
+	private static final String LEFT = "LEFT";
+	private static final String BOTTOM = "BOTTOM";
+	private static final String RIGHT = "RIGHT";
+	private static final Color DISABLE = Color.RED;
+	private static final Color ENABLE = Color.YELLOW;
+	private static final Color USED = Color.GREEN;
+	private List <Image> timerNumbers;
+	private int curNumber = 0;
+	
+	public Station(int radius, Point coords) throws IOException {
+		calcOrientation(coords);
+		colors = new ArrayList <Color> ();
+		colors.add(DISABLE);
+		colors.add(ENABLE);
+		colors.add(USED);
 		setRadius(radius);
 		setWidth(2 * radius);
 		setHeight(2 * radius);
 		setPosition(coords);
-		color = Color.RED;
-		//color = new Color(255, 255, 0);
+		color = DISABLE;
+		fillNumbersList();
 	}
-
-	public Station(int radius, Point coords, Color color) {
+	
+	public Station(int radius, Point coords, Color color) throws IOException {
+		calcOrientation(coords);
+		colors = new ArrayList <Color> ();
+		colors.add(DISABLE);
+		colors.add(ENABLE);
+		colors.add(USED);
 		setRadius(radius);
 		setWidth(2 * radius);
 		setHeight(2 * radius);
 		setPosition(coords);
-		setColor(color);
+		this.color = color;
+		fillNumbersList();
 	}
 
+	private void fillNumbersList() throws IOException {
+		timerNumbers = new ArrayList <Image> ();
+		timerNumbers.add((Image) ImageIO.read(new File("./resources/textures/0.png")));
+		timerNumbers.add((Image) ImageIO.read(new File("./resources/textures/1.png")));
+		timerNumbers.add((Image) ImageIO.read(new File("./resources/textures/2.png")));
+		timerNumbers.add((Image) ImageIO.read(new File("./resources/textures/3.png")));
+	}
+	
+	public Image getNumberImage() {
+		return timerNumbers.get(curNumber);
+	}
+	
+	public void setCurNumber(int number) {
+		curNumber = number;
+	}
+	
+	private void calcOrientation(Point coords) {
+		if (coords.x == 0) orientation = LEFT;
+		else if (coords.y == 574) orientation = BOTTOM;
+		else if (coords.x == 800) orientation = RIGHT;
+	}
+	
 	public Color getColor() {
 		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
 	}
 
 	public int getRadius() {
@@ -69,14 +111,21 @@ public class Station implements GameObject {
 		this.coords = coords;
 	}
 
-	public boolean isUsed() {
-		return used;
+	public String getOrientation() {
+		return orientation;
 	}
-
-	public void setUsed(boolean used) {
-		if (used == false)
-			color = Color.RED;
-		else color = Color.GREEN;
-		this.used = used;
+	
+	public void setUsingType(int mod) {
+		this.color = colors.get(mod);
+	}
+	
+	public int getUsingType() {
+		if (color == colors.get(0))
+			return 0;
+		else if (color == colors.get(1))
+			return 1;
+		else if (color == colors.get(2))
+			return 2;
+		else return -1;
 	}
 }

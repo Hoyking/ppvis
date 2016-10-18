@@ -26,8 +26,7 @@ public class RailwayPressedAction {
 			if (Math.pow((double) (point.getX() - station.getPosition().getX()), 2)
 					+ Math.pow((double) (point.getY() - station.getPosition().getY()), 2) <= (station.getRadius())
 							* (station.getRadius())) {
-				if (!station.isUsed()) {
-					station.setUsed(true);
+				if (station.getUsingType() == 1) {
 					return station;
 				}
 				else return null;

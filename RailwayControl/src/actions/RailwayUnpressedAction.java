@@ -1,7 +1,6 @@
 package actions;
 
 import java.awt.Point;
-
 import model.Station;
 
 public class RailwayUnpressedAction {

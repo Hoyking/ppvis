@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Path {
 	private Point fPoint;
-	private Point lPoint;
 	private List <Point> points;
 	private Station station;
 	
