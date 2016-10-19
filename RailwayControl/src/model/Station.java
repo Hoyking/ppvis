@@ -87,26 +87,32 @@ public class Station implements GameObject {
 		this.radius = radius;
 	}
 
+	@Override
 	public int getWidth() {
 		return width;
 	}
 
+	@Override
 	public void setWidth(int width) {
 		this.width = width;
 	}
 
+	@Override
 	public int getHeight() {
 		return height;
 	}
 
+	@Override
 	public void setHeight(int height) {
 		this.height = height;
 	}
 
+	@Override
 	public Point getPosition() {
 		return coords;
 	}
 
+	@Override
 	public void setPosition(Point coords) {
 		this.coords = coords;
 	}

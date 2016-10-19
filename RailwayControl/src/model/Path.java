@@ -28,6 +28,14 @@ public class Path {
 		return points.get(index);
 	}
 	
+	public int getIndex(Point point) {
+		for(int index = 0; index < points.size(); index++) {
+			if(points.get(index).equals(point))
+				return index;
+		}
+		return -1;
+	}
+	
 	public Station getStation() {
 		return station;
 	}

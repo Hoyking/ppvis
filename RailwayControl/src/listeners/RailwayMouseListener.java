@@ -37,7 +37,6 @@ public class RailwayMouseListener extends MouseAdapter implements MouseListener,
 		Point tempPoint = new Point(e.getX(), e.getY());
 		Station tempStation = rPressed.checkPoint(tempPoint);
 		if(tempStation != null) {
-			//gc.addPathToView(new Path(tempStation));
 			ac.addPath(new Path(tempStation));
 			validWay = true;
 		}
@@ -50,11 +49,14 @@ public class RailwayMouseListener extends MouseAdapter implements MouseListener,
 		if(validWay){
 			if(tempPoint != null) {
 				ac.refreshCurPath(tempPoint);
+				ac.refreshCurPath(new Point(400, 68));
+				ac.refreshCurPath(new Point(400, 46));
+				ac.refreshCurPath(new Point(400, 24));
+				ac.refreshCurPath(new Point(400, 2));
 				ac.refreshCurPath(new Point(400, -20));
 				validWay = true;
 			}
 			else {
-				//ac.setCurStationUsing(0);
 				ac.removeCurPath();
 				validWay = false;
 			}

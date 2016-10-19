@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
-
 import actions.RailwayPressedAction;
 import actions.RailwayUnpressedAction;
 import listeners.RailwayMouseListener;
@@ -14,6 +13,7 @@ import model.Shedule;
 import model.GameObject;
 import model.Path;
 import model.Station;
+import model.Train;
 import tasks.TrainCreationTask;
 import tasks.TrainPreparingTask;
 import view.GameView;
@@ -26,7 +26,6 @@ public class ActionController implements Runnable {
 	private Shedule curShedule;
 	private static final double ROUND = 5;
 	private double coef = 1.0;
-	private int usingStationsNum = 0;
 	
 	public ActionController(GameView view) {
 		shedules = new ArrayList <Shedule> ();
@@ -51,27 +50,14 @@ public class ActionController implements Runnable {
 		Random random = new Random();
 		Station station;
 		while (true) {
-			if(usingStationsNum == 12) {
-				clearStations();
-				usingStationsNum = 1;
-			}
 			station = (Station)stations.get(random.nextInt(12));
 			if(station.getUsingType() == 0) {
-				usingStationsNum++;
 				break;
 			}
 		}
 		TrainPreparingTask pTask = new TrainPreparingTask(this, station);
 		Thread thread = new Thread(pTask);
 		thread.start();
-	}
-	
-	private void clearStations() {
-		for(GameObject obj: stations) {
-			Station station = (Station)obj;
-			station.setUsingType(0);
-			shedules.clear();
-		}
 	}
 	
 	public void refreshView() {
@@ -100,8 +86,6 @@ public class ActionController implements Runnable {
 			shedule = new Shedule(station, 12);
 			shedules.add(shedule);
 		}
-		view.addGameObject(shedule.getTrain());
-		//view.repaint();
 	}
 	
 	public void addPath(Path path) {
@@ -127,25 +111,61 @@ public class ActionController implements Runnable {
 	}
 	
 	public void checkCorrectShedule(Station station) {
-		if(findShedule(station).getPath() != null) {
+		Shedule shedule = findShedule(station);
+		if(shedule.getPath() != null) {
+			shedule.setStarted(true);
 			station.setUsingType(2);
 			station.setCurNumber(0);
 		}
 		else {
 			station.setUsingType(0);
 			station.setCurNumber(0);
-			System.out.println("Game over");
+			GameController.initiateGameOver();
 		}
+	}
+	
+	private void moveTrains() {
+		for(int index = 0; index < shedules.size(); index++) {
+			Shedule shedule = shedules.get(index);
+			if(shedule.isStarted()) {
+				Path path = shedule.getPath();
+				Train train = shedule.getTrain();
+				if(path != null) {
+					try {
+						Point nextPoint = path.get(path.getIndex(shedule.getCurStationPoint()) + 1);
+						train.setPosition(nextPoint);
+						train.setTexture(shedule.getCurStationPoint(), nextPoint);
+						shedule.setCurStationPoint(nextPoint);
+					}
+					catch(IndexOutOfBoundsException e) {
+						shedule.getStation().setUsingType(0);
+						shedules.remove(shedule);
+						index--;
+					}
+				}
+				else {
+					shedule.getStation().setUsingType(0);
+					shedules.remove(shedule);
+					index--;
+					GameController.initiateGameOver();
+				}
+			}
+		}
+		refreshView();
 	}
 	
 	@Override
 	public void run() {
-		/*while(shedules.size() == 0) {
+		while(shedules.size() == 0) {
 			Thread.yield();
 		}
-		for(Shedule comp: shedules) {
-			
-		}*/
-	}
-	
+		moveTrains();
+		try {
+			Thread.sleep(100);
+		} 
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		run();
+	}	
 }

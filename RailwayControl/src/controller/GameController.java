@@ -5,25 +5,33 @@ import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 import actions.RailwayPressedAction;
 import actions.RailwayUnpressedAction;
 import model.Station;
 import model.GameObject;
+import view.GameOverView;
 import view.GameView;
 
 public class GameController {
-	private GameView view;
-	private List<GameObject> stations;
-	private GameObject dest;
-	private RailwayPressedAction rPressed;
-	private RailwayUnpressedAction rUnpressed;
+	private static GameView gameView;
+	private static GameOverView gameOverView;
+	private static List<GameObject> stations;
+	private static GameObject dest;
+	private static RailwayPressedAction rPressed;
+	private static RailwayUnpressedAction rUnpressed;
+	private static JFrame frame;
 
 	public GameController() throws IOException {
-		view = new GameView(800, 600);
+		frame = new JFrame();
+		frame.setSize(800, 600);
+		frame.setResizable(false);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		initiateGame();
 	}
 	
-	private void fillStationsPack() throws IOException {
+	private static void fillStationsPack() throws IOException {
 		stations = new ArrayList <GameObject> ();
 		//left
 		stations.add(new Station(40, new Point(0, 214)));
@@ -42,13 +50,19 @@ public class GameController {
 		stations.add(new Station(40, new Point(800, 214)));
 	}
 	
-	private void initiateGame() throws IOException {
+	public static void initiateGame() throws IOException {
+		//initiating gaming view
+		gameView = new GameView(800, 600);
+		frame.setContentPane(gameView);
+		//view.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		//stations
 		fillStationsPack();
 		//destination
 		dest = new Station(40, new Point(400, 90), Color.blue);
 		//action controller
-		ActionController ac = new ActionController(view);
+		ActionController ac = new ActionController(gameView);
+		Thread thread = new Thread(ac);
+		thread.start();
 		rPressed = new RailwayPressedAction();
 		rUnpressed = new RailwayUnpressedAction((Station)dest);
 		ac.setStationList(stations);
@@ -56,14 +70,24 @@ public class GameController {
 		//adding gaming objects
 		for(GameObject station: stations) {
 			rPressed.addStation((Station)station);
-			view.addGameObject(station);
+			gameView.addStation((Station)station);
 		}
 		for(GameObject station: stations) {
-			view.addStation(station);
+			gameView.addStation(station);
 		}
-		view.addStation(dest);
-		view.repaint();
+		gameView.addStation(dest);
+		gameView.repaint();
 	}	
+	
+	public static void initiateGameOver() {
+		try {
+			gameOverView = new GameOverView(800, 600);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		frame.setContentPane(gameOverView);
+	}
 	
 	public static void main(String[] args) throws IOException {
 		new GameController();

@@ -15,7 +15,7 @@ public class Train implements GameObject {
 	private List <Point> offset;
 	private int curTextureNum = 0;
 	private Point coords;
-	private static final int SPEED = 5;
+	private static final double STEP = 5;
 
 	public Train(int width, int height) {
 		setWidth(width);
@@ -34,6 +34,8 @@ public class Train implements GameObject {
 			coef = 1;
 		double angle = Math.atan(tg);
 		curTextureNum = (int) (((angle * 180 / Math.PI) + 90 + 11.25) * 100) / 2250 + 8 * coef;
+		if(curTextureNum == 16)
+			curTextureNum--;
 	}
 	
 	public void setTexture(int textureNum) {
@@ -106,7 +108,12 @@ public class Train implements GameObject {
 
 	@Override
 	public Point getPosition() {
+		//return new Point(coords.x + offset.get(curTextureNum).x, coords.y + offset.get(curTextureNum).y);
 		return coords;
+	}
+	
+	public Point getOrientedPosition() {
+		return new Point(coords.x + offset.get(curTextureNum).x, coords.y + offset.get(curTextureNum).y);
 	}
 
 	@Override
@@ -114,7 +121,7 @@ public class Train implements GameObject {
 		this.coords = new Point(coords.x - offset.get(curTextureNum).x, coords.y - offset.get(curTextureNum).y);
 	}
 
-	public static int getSpeed() {
-		return SPEED;
+	public static double getStep() {
+		return STEP;
 	}
 }

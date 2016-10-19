@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import model.Station;
 import model.GameObject;
@@ -20,13 +19,11 @@ import model.Path;
 import model.Shedule;
 import model.Train;
 
-public class GameView extends JFrame {
+public class GameView extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Graphics2D g;
 	private List <GameObject> stations;
 	private List <Shedule> shedules;
-	private List <Path> ways;
-	private List <GameObject> objects;
 	private static final int RailwayWidth = 10;
 	private static final int SleeperInterval = 5;
 	private int intervalCounter = 0;
@@ -36,13 +33,9 @@ public class GameView extends JFrame {
 	public GameView(int width, int height) throws IOException {
 		background = (Image) ImageIO.read(new File("./resources/textures/background.jpg"));
 		station = (Image) ImageIO.read(new File("./resources/textures/station.png"));
-		objects = new ArrayList <GameObject> ();
-		ways = new ArrayList <Path> ();
 		stations = new ArrayList <GameObject> ();
 		this.setSize(width, height);
 		this.setVisible(true);
-		this.setResizable(false);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	public void setSheduleList(List <Shedule> shedules) {
@@ -55,30 +48,6 @@ public class GameView extends JFrame {
 	
 	public void addStation(GameObject station) {
 		stations.add(station);
-	}
-	
-	public void addGameObject(GameObject object) {
-		objects.add(object);
-	}
-	
-	public void removeObject(GameObject object) {
-		objects.remove(object);
-	}
-	
-	public void addPath(Path path) {
-		ways.add(path);
-	}
-	
-	public Path getCurPath() {
-		return ways.get(ways.size() - 1);
-	}
-	
-	public void removeCurPath() {
-		ways.remove(ways.size() - 1);
-	}
-	
-	public void removePath(GameObject path) {
-		ways.remove(path);
 	}
 
 	@Override
@@ -107,27 +76,23 @@ public class GameView extends JFrame {
 				e.printStackTrace();
 			}
 		}
-		/*for(Path path: ways) {
-			drawPath(path);
-		}
-		for(GameObject object: objects) {
-			try {
-				drawObject(object);
-			} 
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-		}*/
 		g.drawImage(station, 345, 0, null);
-		graphics2d.drawImage(buffer, 0, 26, null);
+		graphics2d.drawImage(buffer, 0, 0, null);
 	}
 	
 	public void drawObject(GameObject object) throws IOException {
+		Train train;
+		Station station;
 		try {
-			Train train = (Train) object;
+			train = (Train) object;
+			//Point p = train.getPosition();
 			g.drawImage(train.getTexture(), train.getPosition().x, train.getPosition().y, null);
-		} catch (Exception e) {
-			Station station = (Station) object;
+			/*train.setPosition(new Point(400, 300));
+			g.drawImage(train.getTexture(), train.getPosition().x, train.getPosition().y, null);
+			train.setPosition(p);*/
+		} 
+		catch (ClassCastException e) {
+			station = (Station) object;
 			g.setStroke(new BasicStroke(2));
 			g.setColor(station.getColor());
 			g.drawOval(station.getPosition().x - station.getRadius(), station.getPosition().y - station.getRadius(),
@@ -180,6 +145,6 @@ public class GameView extends JFrame {
 	}
 
 	public JPanel getPanel() {
-		return (JPanel)this.getContentPane();
+		return this;
 	}
 }
