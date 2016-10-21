@@ -6,16 +6,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
-import actions.RailwayPressedAction;
-import actions.RailwayUnpressedAction;
+import action.RailwayPressedAction;
+import action.RailwayUnpressedAction;
 import model.Station;
-import model.GameObject;
 import view.GameOverView;
 import view.GameView;
+import view.IntroView;
+import model.GameObject;
 
 public class GameController {
 	private static GameView gameView;
 	private static GameOverView gameOverView;
+	private static IntroView introView;
 	private static List<GameObject> stations;
 	private static GameObject dest;
 	private static RailwayPressedAction rPressed;
@@ -28,7 +30,7 @@ public class GameController {
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		initiateGame();
+		initiateIntro();
 	}
 	
 	private static void fillStationsPack() throws IOException {
@@ -50,11 +52,20 @@ public class GameController {
 		stations.add(new Station(40, new Point(800, 214)));
 	}
 	
+	public static void initiateIntro() {
+		try {
+			introView = new IntroView(800, 600);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		frame.setContentPane(introView);
+	}
+	
 	public static void initiateGame() throws IOException {
 		//initiating gaming view
 		gameView = new GameView(800, 600);
+		gameView.setEnabled(true);
 		frame.setContentPane(gameView);
-		//view.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		//stations
 		fillStationsPack();
 		//destination
@@ -79,14 +90,20 @@ public class GameController {
 		gameView.repaint();
 	}	
 	
-	public static void initiateGameOver() {
+	public static void initiateGameOver(int score) {
 		try {
-			gameOverView = new GameOverView(800, 600);
+			gameOverView = new GameOverView(800, 600, score);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		gameView.setEnabled(false);
 		frame.setContentPane(gameOverView);
+	}
+	
+	public static void exit() {
+		frame.setEnabled(false);
+		frame.dispose();
+		System.exit(0);
 	}
 	
 	public static void main(String[] args) throws IOException {

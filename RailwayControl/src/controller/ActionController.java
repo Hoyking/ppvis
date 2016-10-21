@@ -6,16 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
-import actions.RailwayPressedAction;
-import actions.RailwayUnpressedAction;
-import listeners.RailwayMouseListener;
+
+import action.RailwayPressedAction;
+import action.RailwayUnpressedAction;
+import listener.RailwayMouseListener;
 import model.Shedule;
 import model.GameObject;
 import model.Path;
 import model.Station;
 import model.Train;
-import tasks.TrainCreationTask;
-import tasks.TrainPreparingTask;
+import task.TrainCreationTask;
+import task.TrainPreparingTask;
 import view.GameView;
 
 public class ActionController implements Runnable {
@@ -26,12 +27,14 @@ public class ActionController implements Runnable {
 	private Shedule curShedule;
 	private static final double ROUND = 5;
 	private double coef = 1.0;
+	private TrainCreationTask task;
+	private boolean enabled = true;
 	
 	public ActionController(GameView view) {
 		shedules = new ArrayList <Shedule> ();
 		this.view = view;
 		rListener = new RailwayMouseListener(view.getPanel(), this);
-		initiateTask();
+		initiateCreationTask();
 	}
 	
 	public void setActions(RailwayPressedAction rPressed, RailwayUnpressedAction rUnpressed) {
@@ -39,8 +42,8 @@ public class ActionController implements Runnable {
 		rListener.setUnpressedAction(rUnpressed);
 	}
 	
-	public void initiateTask() {
-		TrainCreationTask task = new TrainCreationTask(this);
+	public void initiateCreationTask() {
+		task = new TrainCreationTask(this);
 		Timer timer = new Timer();
 		timer.schedule(task, (long)(ROUND / coef * 1000));
 		coef += 0.1;
@@ -118,9 +121,13 @@ public class ActionController implements Runnable {
 			station.setCurNumber(0);
 		}
 		else {
-			station.setUsingType(0);
-			station.setCurNumber(0);
-			GameController.initiateGameOver();
+			if(enabled) {
+				enabled = false;
+				station.setUsingType(0);
+				station.setCurNumber(0);
+				task.cancel();
+				GameController.initiateGameOver(view.getScore());
+			}
 		}
 	}
 	
@@ -141,13 +148,19 @@ public class ActionController implements Runnable {
 						shedule.getStation().setUsingType(0);
 						shedules.remove(shedule);
 						index--;
+						view.scoreIncr();
 					}
 				}
 				else {
-					shedule.getStation().setUsingType(0);
-					shedules.remove(shedule);
-					index--;
-					GameController.initiateGameOver();
+					if(enabled) {
+						enabled = false;
+						shedule.getStation().setUsingType(0);
+						shedules.remove(shedule);
+						index--;
+						task.cancel();
+						GameController.initiateGameOver(view.getScore());
+						break;
+					}
 				}
 			}
 		}

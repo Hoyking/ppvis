@@ -29,6 +29,7 @@ public class GameView extends JPanel {
 	private int intervalCounter = 0;
 	private Image background;
 	private Image station;
+	private int score = 0;
 
 	public GameView(int width, int height) throws IOException {
 		background = (Image) ImageIO.read(new File("./resources/textures/background.jpg"));
@@ -36,6 +37,14 @@ public class GameView extends JPanel {
 		stations = new ArrayList <GameObject> ();
 		this.setSize(width, height);
 		this.setVisible(true);
+	}
+	
+	public void scoreIncr() {
+		score++;
+	}
+	
+	public int getScore() {
+		return score;
 	}
 	
 	public void setSheduleList(List <Shedule> shedules) {
@@ -76,6 +85,7 @@ public class GameView extends JPanel {
 				e.printStackTrace();
 			}
 		}
+		g.drawString("SCORE: " + score, 720, 20);
 		g.drawImage(station, 345, 0, null);
 		graphics2d.drawImage(buffer, 0, 0, null);
 	}
@@ -85,11 +95,7 @@ public class GameView extends JPanel {
 		Station station;
 		try {
 			train = (Train) object;
-			//Point p = train.getPosition();
 			g.drawImage(train.getTexture(), train.getPosition().x, train.getPosition().y, null);
-			/*train.setPosition(new Point(400, 300));
-			g.drawImage(train.getTexture(), train.getPosition().x, train.getPosition().y, null);
-			train.setPosition(p);*/
 		} 
 		catch (ClassCastException e) {
 			station = (Station) object;
