@@ -27,7 +27,7 @@ public class IntroView extends JPanel{
 		background = (Image) ImageIO.read(new File("./resources/textures/background.jpg"));
 		name = (Image) ImageIO.read(new File("./resources/textures/name.png"));
 		newGame = new Button("NEW GAME", 350, 350, new NewGameAction());
-		score  = new Button("SCORE", 350, 400, new NewGameAction());
+		score  = new Button("SCORE", 350, 400, new ScoreAction());
 		exit = new Button("EXIT", 350, 450, new ExitAction());
 		this.setSize(width, height);
 		this.setVisible(true);

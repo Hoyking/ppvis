@@ -3,6 +3,7 @@ package listener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import gui.Button;
@@ -13,6 +14,12 @@ public class ButtonListener extends MouseAdapter implements MouseListener {
 	
 	public ButtonListener(JPanel panel, List <Button> buttons) {
 		this.buttons = buttons;
+		this.panel = panel;
+	}
+	
+	public ButtonListener(JPanel panel, Button button) {
+		buttons = new ArrayList <Button> ();
+		buttons.add(button);
 		this.panel = panel;
 	}
 	

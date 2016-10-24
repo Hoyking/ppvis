@@ -6,18 +6,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import action.RailwayPressedAction;
 import action.RailwayUnpressedAction;
 import model.Station;
 import view.GameOverView;
 import view.GameView;
 import view.IntroView;
+import view.ScoreView;
 import model.GameObject;
+import model.Score;
 
 public class GameController {
 	private static GameView gameView;
 	private static GameOverView gameOverView;
 	private static IntroView introView;
+	private static ScoreView scoreView;
 	private static List<GameObject> stations;
 	private static GameObject dest;
 	private static RailwayPressedAction rPressed;
@@ -30,6 +35,13 @@ public class GameController {
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		try {
+			new Score("./data/score.xml");
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
 		initiateIntro();
 	}
 	
@@ -59,6 +71,15 @@ public class GameController {
 			e.printStackTrace();
 		}
 		frame.setContentPane(introView);
+	}
+	
+	public static void initiateScore() {
+		try {
+			scoreView = new ScoreView(800, 600);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		frame.setContentPane(scoreView);
 	}
 	
 	public static void initiateGame() throws IOException {

@@ -13,9 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import action.*;
 import gui.Button;
 import listener.ButtonListener;
+import model.Score;
 
 public class GameOverView extends JPanel{
 	private static final long serialVersionUID = 1L;
@@ -23,7 +28,21 @@ public class GameOverView extends JPanel{
 	private Image gameover;
 	private Button restart;
 	private Button mainMenu;
+	private String[] messages = {
+			"NEW RECORD !",
+			"2-nd place",
+			"3-d place",
+			"4-th place",
+			"5-th place",
+			"6-th place",
+			"7-th place",
+			"8-th place",
+			"9-th place",
+			"10-th place"
+	};
+	private int[] offset = {320, 344, 352, 348, 348, 348, 348, 348, 348, 342};
 	private int score;
+	private int result;
 	
 	public GameOverView(int width, int height, int score) throws IOException {
 		background = (Image) ImageIO.read(new File("./resources/textures/background.jpg"));
@@ -33,6 +52,13 @@ public class GameOverView extends JPanel{
 		this.setSize(width, height);
 		this.setVisible(true);
 		this.score = score;
+		try {
+			result = Score.add(score);
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		}
 		List <Button> buttons = new ArrayList <Button> ();
 		buttons.add(restart);
 		buttons.add(mainMenu);
@@ -55,6 +81,10 @@ public class GameOverView extends JPanel{
 		g.setFont(new Font("Arial", Font.BOLD, 20));
 		g.drawString("SCORE: " + score, 255, 320);
 		g.drawString("HIGH SCORE: " + score, 395, 320);
+		g.setColor(Color.ORANGE);
+		g.setFont(new Font("Arial", Font.BOLD, 22));
+		if(result != -1)
+			g.drawString(messages[result], offset[result], 450);
 		g.setColor(Color.YELLOW);
 		g.setStroke(new BasicStroke(3));
 		g.drawRoundRect(240, 293, 320, 40, 10, 10);

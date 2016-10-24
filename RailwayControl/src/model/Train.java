@@ -68,22 +68,22 @@ public class Train implements GameObject {
 	
 	private void fillTrainTexturePack() throws IOException {
 		textures = new ArrayList <Image> ();
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train0.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train1.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train2.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train3.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train4.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train5.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train6.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train7.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train8.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train9.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train10.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train11.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train12.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train13.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train14.png")));
-		textures.add((Image) ImageIO.read(new File("./resources/textures/train15.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train0.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train1.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train2.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train3.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train4.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train5.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train6.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train7.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train8.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train9.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train10.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train11.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train12.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train13.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train14.png")));
+		textures.add((Image) ImageIO.read(new File("./resources/textures/train/train15.png")));
 	}
 
 	@Override

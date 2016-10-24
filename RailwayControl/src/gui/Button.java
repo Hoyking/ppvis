@@ -23,8 +23,8 @@ public class Button {
 	
 	public Button(String text, int x, int y, ButtonAction ba) {
 		try {
-			buttonPressed = (Image) ImageIO.read(new File("./resources/textures/pressed.png"));
-			buttonUnpressed = (Image) ImageIO.read(new File("./resources/textures/unpressed.png"));
+			buttonPressed = (Image) ImageIO.read(new File("./resources/textures/button/pressed.png"));
+			buttonUnpressed = (Image) ImageIO.read(new File("./resources/textures/button/unpressed.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

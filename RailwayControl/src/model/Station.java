@@ -55,10 +55,10 @@ public class Station implements GameObject {
 
 	private void fillNumbersList() throws IOException {
 		timerNumbers = new ArrayList <Image> ();
-		timerNumbers.add((Image) ImageIO.read(new File("./resources/textures/0.png")));
-		timerNumbers.add((Image) ImageIO.read(new File("./resources/textures/1.png")));
-		timerNumbers.add((Image) ImageIO.read(new File("./resources/textures/2.png")));
-		timerNumbers.add((Image) ImageIO.read(new File("./resources/textures/3.png")));
+		timerNumbers.add((Image) ImageIO.read(new File("./resources/textures/number/0.png")));
+		timerNumbers.add((Image) ImageIO.read(new File("./resources/textures/number/1.png")));
+		timerNumbers.add((Image) ImageIO.read(new File("./resources/textures/number/2.png")));
+		timerNumbers.add((Image) ImageIO.read(new File("./resources/textures/number/3.png")));
 	}
 	
 	public Image getNumberImage() {

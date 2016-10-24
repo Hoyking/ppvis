@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
-
 import action.RailwayPressedAction;
 import action.RailwayUnpressedAction;
 import listener.RailwayMouseListener;
