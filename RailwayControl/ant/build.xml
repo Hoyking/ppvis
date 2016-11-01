@@ -1,0 +1,43 @@
+<project name="RailwayControl" default="deleteTempFiles" basedir="..">
+	<property name="src" location="src"/>
+	<property name="build" location="build"/>
+	<property name="textures" location="resources/textures"/>
+	<property name="data" location="data"/>
+	<property name="project" location="RailwayControl"/>
+	
+	<target name="init">
+	    <mkdir dir="${build}"/>
+	</target>
+	
+	<target name="compile" depends="init">
+		<javac includeantruntime="false" srcdir="${src}" destdir="${build}"/>
+	</target>
+	
+	<target name="make" depends="copy">
+		<jar jarfile="${project}/RailwayControl.jar" basedir="${build}">
+			<manifest>
+				<attribute name="Main-Class" value="controller.GameController"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="copy" depends="compile">
+		<mkdir dir="RailwayControl/resources/textures"/>
+		<mkdir dir="RailwayControl/data"/>
+		<copy todir="RailwayControl/resources/textures">
+			<fileset dir="${textures}"/>
+		</copy>
+		<copy todir="RailwayControl/data">
+			<fileset dir="${data}"/>
+		</copy>
+	</target>
+	
+	<target name="clean">
+	    <delete dir="${build}"/>
+	    <delete dir="${project}"/>
+	</target>
+	
+	<target name="deleteTempFiles" depends="make">
+		<delete dir="${build}"/>
+	</target>
+</project>
